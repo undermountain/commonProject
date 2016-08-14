@@ -37,7 +37,7 @@ public class KeyList<T> implements Serializable,List<T> {
 	@Override
 	public Iterator<T> iterator() {
 		// TODO 自動生成されたメソッド・スタブ
-		return (Iterator<T>) this.iterator();
+		return this.iterator();
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public class KeyList<T> implements Serializable,List<T> {
 	@Override
 	public T get(int index) {
 		// TODO 自動生成されたメソッド・スタブ
-		return (T) list.get(index).value;
+		return list.get(index).value;
 	}
 	public T get(Object key) {
 		for(KeyValueEx<T> kv:list){
@@ -164,17 +164,17 @@ public class KeyList<T> implements Serializable,List<T> {
 	@Override
 	public T remove(int index) {
 		// TODO 自動生成されたメソッド・スタブ
-		T value = (T)list.remove(index).value;
+		T value = list.remove(index).value;
 		return value;
 	}
 
 	public T remove(String key) {
 		for(int i=0;i<this.size();i++){
 			if(list.get(i).key.equals(key)){
-				return (T) list.remove(i).value;
+				return list.remove(i).value;
 			}
 		}
-		return (T) list.remove(-1).value;
+		return list.remove(-1).value;
 	}
 
 	@Override

@@ -36,6 +36,7 @@ public class MailG {
 		pt.put("mail.smtp.debug", "true");
 
 		Session session = Session.getInstance(pt, new Authenticator(){
+			@Override
 			protected PasswordAuthentication getPasswordAuthentication(){
                 return new PasswordAuthentication(user, pass);
             }

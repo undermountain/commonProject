@@ -70,11 +70,11 @@ public class Model {
 
 	public FieldBase getField(String id){
 		if(fieldList==null)return null;
-		return (FieldBase)fieldList.get(id);
+		return fieldList.get(id);
 	}
 	public FieldBase getField(int index){
 		if(fieldList==null)return null;
-		return (FieldBase)fieldList.get(index);
+		return fieldList.get(index);
 	}
 	public void addField(FieldBase field){
 		if(fieldList==null)fieldList=new KeyList<FieldBase>();

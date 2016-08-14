@@ -23,6 +23,7 @@ public abstract class FieldBase extends Elementer implements Serializable {
 	public List<ValidationBase> validationList;
 	public List<String> errorMessageList;
 
+	public String description;
 
 	public int height;
 	public int width;
@@ -61,19 +62,35 @@ public abstract class FieldBase extends Elementer implements Serializable {
 		return sb.toString();
 	}
 
-	public boolean setValue(HttpServletRequest request) {
+	public boolean setValueByRequest(HttpServletRequest request) {
 		String value=request.getParameter(getId()).trim();
 		setAttribute("value", value);
 		return value!=null;
 	}
-	public void setValue(String value){
+	public void setValue(Object value){
 		setAttribute("value",value);
 	}
 
-	public String getValue(){
+	public Object getValue(){
 		return getAttribute("value");
 	}
+	public String getStrValue(){
+		if(getValue()!=null)
+			return getValue().toString();
+		else
+			return "";
+	}
 
+	public Integer getIntValue(){
+		if(getValue()!=null && common.lib.Check.isInteger(getStrValue()))
+			return Integer.valueOf(getStrValue());
+		else
+			return null;
+	}
+
+	public Object[] getValueToArray(){
+		return null;
+	}
 
 	public boolean runValidation(Model model) {
 
@@ -135,11 +152,5 @@ public abstract class FieldBase extends Elementer implements Serializable {
 		}*/
 	}
 
-	public void toValueHtml(StringBuilder sb){
-		sb.append(getValue());
-	}
-	public String toValueHtml(){
-		return getValue();
-	}
 
 }

@@ -40,11 +40,10 @@ public class KeyList<T> implements Serializable,List<T> {
 		return (Iterator<T>) this.iterator();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public T[] toArray() {
+	public Object[] toArray() {
 		// TODO 自動生成されたメソッド・スタブ
-		return (T[]) list.toArray();
+		return list.stream().map(KeyValueEx::getValue).toArray();
 	}
 
 	@SuppressWarnings("unchecked")

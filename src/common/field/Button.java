@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import common.base.FieldBase;
 
 public class Button extends FieldBase implements Serializable {
-
+	private static final long serialVersionUID = 1L;
 	public Button( String id,String caption) {
 		super("button", id);
 		inner=caption;
@@ -23,7 +23,7 @@ public class Button extends FieldBase implements Serializable {
 		this.setValue(value);
 	}
 	@Override
-	public boolean setValue(HttpServletRequest request) {
+	public boolean setValueByRequest(HttpServletRequest request) {
 		// TODO 自動生成されたメソッド・スタブ
 		return true;
 	}

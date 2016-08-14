@@ -3,6 +3,7 @@ package common.tag;
 import java.io.Serializable;
 
 public class ColumnInfo implements Serializable {
+	private static final long serialVersionUID = 1L;
 	public boolean searchable=true;
 	public boolean visible=true;
 	public boolean orderable=true;
@@ -13,13 +14,35 @@ public class ColumnInfo implements Serializable {
 	public boolean raw;
 	public String nullString="";
 	public int displayMaxLength=0;
+	public Integer maxheight;
+	public Integer maxwidth;
 
 
 	public String getDisplay(Object value){
+		if(value==null){
+			return nullString;
+		}
 		StringBuilder sb=new StringBuilder();
+
+		if(value.getClass().isArray()){
+			sb.append("<ul>");
+			for(Object o:(Object[])value){
+				sb.append("<li>");
+				display(sb,o);
+				sb.append("</li>");
+			}
+			sb.append("</ul>");
+		}else{
+			display(sb,value);
+		}
+
+		return sb.toString();
+	}
+
+	private void display(StringBuilder sb,Object value){
 		if(value==null){
 			sb.append(nullString);
-			return sb.toString();
+			return;
 		}
 		sb.append(prefix);
 		String result="";
@@ -39,8 +62,6 @@ public class ColumnInfo implements Serializable {
 		}
 
 		sb.append(suffix);
-
-		return sb.toString();
 	}
 
 	private String rawString(String value) {

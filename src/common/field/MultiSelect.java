@@ -1,6 +1,9 @@
 package common.field;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,8 +11,7 @@ import common.base.FieldBase;
 import common.web.Elementer;
 
 public class MultiSelect extends FieldBase implements Serializable {
-
-	public String[] value;
+	private static final long serialVersionUID = 1L;
 
 	public MultiSelect( String id) {
 		super("ul", id);
@@ -30,7 +32,7 @@ public class MultiSelect extends FieldBase implements Serializable {
 		checkItem.setAttribute("type", "checkbox");
 		checkItem.setAttribute("value", value);
 		checkItem.setId(String.format("%s%s",getId(),this.childElementer==null?0:this.childElementer.size()));
-		checkItem.setAttribute(getId(), value);
+		checkItem.setAttribute("name", getId());
 
 		label.addChild(checkItem,caption);
 		liItem.addChild(label);
@@ -41,8 +43,9 @@ public class MultiSelect extends FieldBase implements Serializable {
 
 
 	@Override
-	public boolean setValue(HttpServletRequest request) {
-		this.value=request.getParameterValues(getId());
+	public boolean setValueByRequest(HttpServletRequest request) {
+
+		setValue(request.getParameterValues(getId()));
 		return true;
 	}
 
@@ -50,25 +53,39 @@ public class MultiSelect extends FieldBase implements Serializable {
 	 * 一つの要素をチェックを切り替える
 	 */
 	@Override
-	public void setValue(String value) {
-		if(this.childElementer==null)return;
-		for(int i=0;i<this.childElementer.size();i++){
-			if(this.childElementer.get(i).childElementer.get(0).getAttribute("value").equals(value)){
-				if(this.childElementer.get(i).childElementer.get(0).getAttribute("selected")==null){
-					this.childElementer.get(i).childElementer.get(0).setAttribute("selected", "selected");
+	public void setValue(Object value) {
+		if(value==null)return;
+		if(value.getClass().isArray()){
+			List<Object> obj = Arrays.asList((Object[])value);
+			for(int i=0;i<this.childElementer.size();i++){
+				Elementer element=this.childElementer.get(i).childElementer.get(0).childElementer.get(0);
+				if(obj.contains(element.getAttribute("value"))){
+					element.setAttribute("selected", "selected");
 				}else{
-					this.childElementer.get(i).childElementer.get(0).removeAttribute("selected");
+					element.removeAttribute("selected");
+				}
+			}
+		}else{
+			if(this.childElementer==null)return;
+			for(int i=0;i<this.childElementer.size();i++){
+				Elementer element=this.childElementer.get(i).childElementer.get(0).childElementer.get(0);
+				if(element.getAttribute("value").equals(value)){
+					if(element.getAttribute("selected")==null){
+						element.setAttribute("selected", "selected");
+					}else{
+						element.removeAttribute("selected");
+					}
 				}
 			}
 		}
 	}
 
 	@Override
-	public String getValue() {
-		if(value==null)return null;
+	public String getStrValue() {
+		if(getValueToArray()==null)return null;
 		StringBuilder sb = new StringBuilder();
 		boolean first=true;
-		for(String str : value) {
+		for(Object str : getValueToArray()) {
 			if(first){
 				first=false;
 			}else{
@@ -79,6 +96,44 @@ public class MultiSelect extends FieldBase implements Serializable {
 
 		return sb.toString();
 	}
+
+	@Override
+	public Object getValue() {
+		if(getValueToArray()==null)return null;
+		return getValueToArray();
+	}
+
+	@Override
+	public Object[] getValueToArray() {
+		// TODO 自動生成されたメソッド・スタブ
+		List<Object> list=new ArrayList<Object>();
+
+		int i=0;
+		while(true){
+
+			Elementer element=getChildById(getId()+String.valueOf(i++));
+			if(element==null)break;
+			if(element.getAttribute("selected")!=null)
+				list.add(element.getAttribute("value"));
+		}
+
+		return list.toArray();
+	}
+
+	public String[] getOptionItems() {
+		List<String> list=new ArrayList<String>();
+
+		int i=0;
+		while(true){
+
+			Elementer element=getChildById(getId()+String.valueOf(i++));
+			if(element==null)break;
+			list.add(element.getAttribute("value"));
+		}
+
+		return list.toArray(new String[list.size()]);
+	}
+
 
 
 }

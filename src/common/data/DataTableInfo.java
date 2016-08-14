@@ -24,7 +24,7 @@ public class DataTableInfo implements Serializable {
 
 	public DataTable dataTable;
 
-	public void addField(FieldBase field){
+	public void addField(FieldBase field,ColumnInfo columnInfo){
 		if(fieldList==null)fieldList=new ArrayList<FieldBase>();
 		fieldList.add(field);
 		if(dataTable.columns==null){
@@ -38,7 +38,7 @@ public class DataTableInfo implements Serializable {
 		if(columnInfos==null){
 			columnInfos=new ArrayList<ColumnInfo>();;
 		}
-		columnInfos.add(newColumnInfo(field));
+		columnInfos.add(columnInfo);
 
 
 		//現データに追加列のデータを追加
@@ -72,7 +72,7 @@ public class DataTableInfo implements Serializable {
         	dataTable.rows.set(i, (Object[]) common.lib.Util.addObjectToArray(dataTable.rows.get(i), addobj));
         }
 	}
-	public void editField(String displayName,FieldBase field){
+	public void editField(String displayName,FieldBase field, ColumnInfo columnInfo){
 
         int size=this.fieldList.size();
 
@@ -80,7 +80,7 @@ public class DataTableInfo implements Serializable {
         	if(this.fieldList.get(i).displayName.equals(displayName)){
         		this.fieldList.set(i,field);
         		dataTable.columns[i]=field.displayName;
-        		columnInfos.set(i, newColumnInfo(field));
+        		columnInfos.set(i, columnInfo);
         		break;
         	}
         }

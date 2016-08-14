@@ -60,16 +60,16 @@ public abstract class ServletBase extends HttpServlet {
 					response.sendRedirect(loginUrl()+"?to="+URLEncoder.encode(request.getRequestURI()+"?"+request.getQueryString(), encode) );
 				}
 			}
-			String[] requestURI=request.getRequestURI().split("/");
+			String[] requestURI=request.getPathInfo().split("/");
 
-			if(requestURI.length>3){
+			if(requestURI.length>1){
 				//kindName=requestURI[3].toLowerCase();
-				kindName=requestURI[3].toLowerCase();
+				kindName=requestURI[1].toLowerCase();
 			}else{
 				kindName=defaultKindName();
 			}
-			if(requestURI.length>4){
-				pageName=fiastUpper(requestURI[4]);
+			if(requestURI.length>2){
+				pageName=fiastUpper(requestURI[2]);
 			}else{
 				pageName=defaultPageName();
 			}

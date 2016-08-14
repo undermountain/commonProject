@@ -30,18 +30,19 @@ public class StringLength extends ValidationBase implements Serializable {
 			if(minlength==null){
 				return true;
 			}else{
-				if(field.getValue().length()<minlength){
+				if(field.getValue()!=null && field.getValue().toString().length()<minlength){
 					return false;
 				}
 			}
 
 		}else{
 			if(minlength==null){
-				if(field.getValue().length()>maxlength){
+				if(field.getValue()!=null && field.getValue().toString().length()>maxlength){
 					return false;
 				}
 			}else{
-				if(field.getValue().length()<minlength||field.getValue().length()>maxlength){
+				if((field.getValue()!=null && field.getValue().toString().length()<minlength)
+						||(field.getValue()!=null && field.getValue().toString().length()>maxlength)){
 					return false;
 				}
 			}

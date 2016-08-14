@@ -12,7 +12,7 @@ import common.base.ActionBase;
 import common.web.Elementer;
 
 public class ElementerHtml extends ActionBase implements Serializable {
-
+	private static final long serialVersionUID = 1L;
 	public List<Elementer> elementList;
 
 	public ElementerHtml(String name) {

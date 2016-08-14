@@ -3,6 +3,7 @@ package common.web;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import common.base.ActionBase;
 import common.base.FieldBase;
+import common.tag.InputTable;
 import common.type.KeyList;
 import common.type.KeyValue;
 import common.type.KeyValueEx;
@@ -74,9 +76,15 @@ public class Model {
 		if(fieldList==null)return null;
 		return (FieldBase)fieldList.get(index);
 	}
-	public void addField(FieldBase... field){
+	public void addField(FieldBase field){
+		if(fieldList==null)fieldList=new KeyList<FieldBase>();
+		fieldList.add(field.getId(), field);
+	}
+
+	public void addFieldAll(FieldBase... field){
+		if(fieldList==null)fieldList=new KeyList<FieldBase>();
 		for(int i=0;i<field.length;i++){
-			if(fieldList==null)fieldList=new KeyList<FieldBase>();
+
 			fieldList.add(field[i].getId(), field[i]);
 		}
 	}
@@ -84,7 +92,7 @@ public class Model {
 	public boolean setValue(HttpServletRequest request){
 		boolean result=true;
 		for(KeyValueEx<FieldBase> kv : fieldList.list) {
-			if(!kv.value.setValue(request))result=false;
+			if(!kv.value.setValueByRequest(request))result=false;
         }
 		return result;
 	}
@@ -134,12 +142,12 @@ public class Model {
 		actionList.add(id, action);
 	}
 
-	public String writeTokenInput(HttpServletRequest request){
+	public String writeTokenInput(){
 		String token=Util.setToken(request);
 
 		return String.format("<input type='hidden' name='_token' value='%s'/>", token);
 	}
-	public boolean checkToken(HttpServletRequest request){
+	public boolean checkToken(){
 		return Util.checkToken(request);
 	}
 
@@ -190,5 +198,10 @@ public class Model {
 	public KeyValue createPToken() {
 		session.setAttribute("_ptoken", common.lib.Util.createToken());
 		return new KeyValue("_ptoken", session.getAttribute("_ptoken"));
+	}
+
+	public String InputTableToHtml(){
+		Object[] fields=this.fieldList.toArray();
+		return new InputTable(Arrays.asList(fields).toArray(new FieldBase[fields.length])).toHtml();
 	}
 }

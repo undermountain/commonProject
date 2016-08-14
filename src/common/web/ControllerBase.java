@@ -11,6 +11,9 @@ import javax.servlet.http.HttpSession;
 
 public abstract class ControllerBase {
 
+
+	private static final String METHOD_POST = "POST";
+
 	public String globalSiteName;
 	public String siteName;
 	public String loginUrl;
@@ -102,30 +105,59 @@ public abstract class ControllerBase {
 		}
 	}
 	public void run() throws ServletException, IOException {
+		if(runCustom()){
+			if(response.isCommitted())return;
+			view();
+			return;
+		}
 		if(response.isCommitted())return;
 		doBefore();
 		if(response.isCommitted())return;
 		if(request.getMethod().equals("POST")){
-			if(model.checkToken){
-				if(!model.checkToken(request)){
-					response.sendRedirect(pageName);
-					return;
-				}
-			}
-			model.setValue(request);
-			if(model.runValidation(request))
-			doPost();
+			if(checkSetModel(model.checkToken))
+				doPost();
 		}else{
 			doGet();
 		}
-
+		if(response.isCommitted())return;
 		doAfter();
 
 		if(response.isCommitted())return;
 
+		view();
+	}
+
+	protected boolean runCustom() throws IOException, ServletException {
+		// TODO 自動生成されたメソッド・スタブ
+		return false;
+	}
+
+	protected boolean view() throws ServletException, IOException{
 		request.setAttribute("model", model);
 		request.getRequestDispatcher(String.format("/_view/%s/%s/%s.jsp",siteName.toLowerCase(),kindName,pageName)).forward(request, response);
+		return true;
 	}
+
+	protected boolean view(String siteName,String kindName,String pageName) throws ServletException, IOException{
+		request.setAttribute("model", model);
+		request.getRequestDispatcher(String.format("/_view/%s/%s/%s.jsp",siteName.toLowerCase(),kindName,pageName)).forward(request, response);
+		return true;
+	}
+
+	protected boolean checkSetModel(boolean checkToken) throws IOException{
+		if(checkToken){
+			if(!model.checkToken()){
+				response.sendRedirect(pageName+"?"+request.getQueryString());
+				return false;
+			}
+		}
+		model.setValue(request);
+		return model.runValidation(request);
+	}
+	protected boolean checkSetModel() throws IOException{
+		return checkSetModel(true);
+	}
+
 	protected Model model;
 
 	protected abstract void doBefore() throws IOException;
@@ -139,5 +171,9 @@ public abstract class ControllerBase {
 	protected String UrlEncode(String url) throws UnsupportedEncodingException {
 		// TODO 自動生成されたメソッド・スタブ
 		return URLEncoder.encode(url, "UTF-8");
+	}
+
+	protected boolean isPost(){
+		return request.getMethod().equals(METHOD_POST);
 	}
 }

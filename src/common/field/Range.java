@@ -5,7 +5,7 @@ import java.io.Serializable;
 import common.base.FieldBase;
 
 public class Range extends FieldBase implements Serializable {
-
+	private static final long serialVersionUID = 1L;
 	public void setMin(int min){
 		setAttribute("min", String.valueOf(min));
 	}

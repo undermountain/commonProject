@@ -5,7 +5,7 @@ import java.io.Serializable;
 import common.web.Elementer;
 
 public class HtmlPreview extends Elementer implements Serializable {
-
+	private static final long serialVersionUID = 1L;
 
 	public HtmlPreview(String html) {
 		super("iframe");

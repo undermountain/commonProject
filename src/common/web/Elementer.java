@@ -87,8 +87,10 @@ public class Elementer implements Serializable {
 
 		for(Map.Entry<String, String> entry : style.entrySet()){
 			sb.append(" ");
-			sb.append(entry.getKey());
+			sb.append("style");
 			sb.append("=\"");
+			sb.append(entry.getKey());
+			sb.append(":");
 			sb.append(Util.htmlEncode(entry.getValue(),false));
 			sb.append("\"");
 		}
@@ -104,16 +106,31 @@ public class Elementer implements Serializable {
 
 
 	public Elementer getChildById(String id){
+		if(childElementer==null)return null;
+
 		int size=childElementer.size();
 		for(int i=0;i<size;i++){
-			if(childElementer.get(i).getAttribute("id").equals(id))return childElementer.get(i);
+			if(childElementer.get(i)!=null){
+				if(childElementer.get(i).getAttribute("id")!=null && childElementer.get(i).getAttribute("id").equals(id))return childElementer.get(i);
+				Elementer child=childElementer.get(i).getChildById(id);
+				if(child!=null)return child;
+			}
 		}
 		return null;
 	}
 
-	public void setAttribute(String key,String value){
+	public void setAttribute(String key,Object value){
 		if(attribute==null)attribute=new HashMap<String,String>();
-		attribute.put(key,value);
+		if (value.getClass().isArray()) {
+			Object[] obj=(Object[])value;
+			for(int i=0;i<obj.length;i++){
+				if(obj[i]!=null)
+					attribute.put(key,obj[i].toString());
+			}
+		}else{
+			if(value!=null)
+				attribute.put(key,value.toString());
+		}
 	}
 	public String getAttribute(String key){
 		if(attribute==null)return null;
@@ -134,14 +151,20 @@ public class Elementer implements Serializable {
 		return style.get(key).split(" ");
 	}
 
-	public void setClass(String... value){
+	public void addCssClass(String... value){
 		StringBuilder sb=new StringBuilder();
+		String cssClass=getAttribute("class");
+		if(cssClass!=null)
+			sb.append(getAttribute("class"));
+
 		for(int i=0;i<value.length;i++){
-			if(i>0)sb.append(" ");
+			if(sb.length()>0)sb.append(" ");
 			sb.append(value[i]);
 		}
 		setAttribute("class", sb.toString());
 	}
+
+
 	public void removeAttribute(String key) {
 		attribute.remove(key);
 

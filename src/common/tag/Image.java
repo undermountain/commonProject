@@ -5,7 +5,7 @@ import java.io.Serializable;
 import common.web.Elementer;
 
 public class Image  extends Elementer implements Serializable {
-
+	private static final long serialVersionUID = 1L;
 	public String src;
 
 	public Image(String title,String src) {

@@ -13,7 +13,7 @@ public class TextArea extends FieldBase implements Serializable {
 		this.displayName=displayName;
 	}
 	@Override
-	public boolean setValue(HttpServletRequest request) {
+	public boolean setValueByRequest(HttpServletRequest request) {
 		String value=request.getParameter(getId());
 		if(value==null){
 			inner="";
@@ -24,8 +24,9 @@ public class TextArea extends FieldBase implements Serializable {
 		}
 	}
 	@Override
-	public void setValue(String value) {
-		inner=value;
+	public void setValue(Object value) {
+		if(value!=null)
+			inner=value.toString();
 	}
 	@Override
 	public String getValue() {

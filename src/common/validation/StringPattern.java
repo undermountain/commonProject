@@ -21,7 +21,7 @@ public class StringPattern extends ValidationBase implements Serializable {
 	@Override
 	public boolean check(FieldBase field,Model model) {
 		Pattern p=Pattern.compile(pattern);
-		Matcher m=p.matcher(field.getValue());
+		Matcher m=p.matcher(field.getValue()==null ? "":field.getValue().toString());
 		return m.matches();
 	}
 

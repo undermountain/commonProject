@@ -135,7 +135,7 @@ public class IdPassword extends FieldBase implements Serializable {
 	}
 
 	@Override
-	public boolean setValue(HttpServletRequest request) {
+	public boolean setValueByRequest(HttpServletRequest request) {
 		idId=request.getParameter(getId()+"id");
 		passwordId=request.getParameter(getId()+"password");
 		siteName=request.getParameter("site");

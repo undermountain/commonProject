@@ -17,7 +17,7 @@ public class InputTable extends Elementer implements Serializable {
 		init(field);
 
 		Elementer tr=new Elementer("div");
-		tr.setClass("submitdiv");
+		tr.addCssClass("submitdiv");
 
 		Submit submit=new Submit(buttonCaption,buttonCaption);
 		tr.addChild(submit);
@@ -40,20 +40,25 @@ public class InputTable extends Elementer implements Serializable {
 				continue;
 			}else if(field[i].getClass().getSimpleName().equals(Button.class.getSimpleName())){
 				Elementer tr=new Elementer("div");
-				tr.setClass("submitdiv");
+				tr.addCssClass("submitdiv");
 				tr.addChild(field[i]);
 				this.addChild(tr);
 			}else{
-				field[i].setClass("form-control");
+				field[i].addCssClass("form-control");
 
 				Elementer tr=new Elementer("div");
-				tr.setClass("form-group");
+				tr.addCssClass("form-group");
 
 				Elementer label=new Elementer("label");
-				label.setClass("control-label");
+				label.addCssClass("control-label");
 				label.inner=field[i].displayName;
 
 				tr.addChild(label);
+				if(field[i].description!=null){
+					Elementer pre=new Elementer("p");
+					pre.inner= field[i].description;
+					tr.addChild(pre);
+				}
 				tr.addChild(field[i]);
 
 				tr.addChild(new Elementer("div",field[i].toErrorMessage()));

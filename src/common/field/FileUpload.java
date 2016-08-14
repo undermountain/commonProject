@@ -25,7 +25,7 @@ public class FileUpload extends FieldBase implements Serializable {
 	}
 
 	@Override
-	public boolean setValue(HttpServletRequest request) {
+	public boolean setValueByRequest(HttpServletRequest request) {
 		try{
 			file=request.getPart(getId());
 

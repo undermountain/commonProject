@@ -1,6 +1,8 @@
 package common.field;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,9 +10,7 @@ import common.base.FieldBase;
 import common.web.Elementer;
 
 public class Select extends FieldBase implements Serializable {
-
-	public String value;
-
+	private static final long serialVersionUID = 1L;
 	public Select( String id) {
 		super("select", id);
 		// TODO 自動生成されたコンストラクター・スタブ
@@ -30,15 +30,15 @@ public class Select extends FieldBase implements Serializable {
 	}
 
 	@Override
-	public boolean setValue(HttpServletRequest request) {
+	public boolean setValueByRequest(HttpServletRequest request) {
 		setValue(request.getParameter(getId()));
 
-		return value!=null;
+		return getValue()!=null;
 	}
 
 	@Override
-	public void setValue(String value) {
-		this.value=value;
+	public void setValue(Object value) {
+
 		if(this.childElementer==null)return;
 		int size=this.childElementer.size();
 		for(int i=0;i<size;i++){
@@ -51,8 +51,26 @@ public class Select extends FieldBase implements Serializable {
 
 	@Override
 	public String getValue() {
-		// TODO 自動生成されたメソッド・スタブ
-		return value;
+		if(this.childElementer==null)return null;
+		int size=this.childElementer.size();
+		for(int i=0;i<size;i++){
+
+			if(this.childElementer.get(i).getAttribute("selected")!=null){
+				return this.childElementer.get(i).getAttribute("value");
+			}
+		}
+		return null;
+	}
+
+	public String[] getOptionItems() {
+		List<String> list=new ArrayList<String>();
+		if(this.childElementer==null)return null;
+		int size=this.childElementer.size();
+		for(int i=0;i<size;i++){
+			list.add(this.childElementer.get(i).getAttribute("value"));
+
+		}
+		return list.toArray(new String[list.size()]);
 	}
 
 

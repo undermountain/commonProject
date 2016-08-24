@@ -180,8 +180,8 @@ public class TableList extends Elementer implements Serializable {
 
 
 	private void search(StringBuilder sb) {
-		sb.append("<link href='/common/contents/DataTables/css/jquery.dataTables.min.css' rel='stylesheet'/>");
-		sb.append("<script src='/common/scripts/DataTables/jquery.dataTables.min.js'></script>");
+		sb.append("<link href='/um/contents/DataTables/css/jquery.dataTables.min.css' rel='stylesheet'/>");
+		sb.append("<script src='/um/scripts/DataTables/jquery.dataTables.min.js'></script>");
 		sb.append("<script type='text/javascript'>");
 		sb.append(String.format("$('#%s').dataTable({", getId()));
 		sb.append(String.format("searching:%s,paging:%s,", search,paging));

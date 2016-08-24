@@ -111,7 +111,7 @@ public abstract class ServletBase extends HttpServlet {
 			String strdate=new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 			File file=new File(Path.ROOT+siteName()+File.separator+"_error"+File.separator+kindName+"."+pageName+"_"+strdate+".log");
 			FileWriter fileWriter = new FileWriter(file);
-			fileWriter.write(ex.getMessage());
+			fileWriter.write(ex.toString());
 			fileWriter.close();
 			throw ex;
 		}

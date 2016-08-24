@@ -21,6 +21,7 @@ public class DataTableInfo implements Serializable {
 	public String[] formats;
 	public boolean paging=false;
 
+	public boolean display=true;
 
 	public DataTable dataTable;
 
@@ -130,11 +131,21 @@ public class DataTableInfo implements Serializable {
 
 	}
 	public ColumnInfo getColumnInfo(int i) {
-		if(columnInfos==null)columnInfos=new ArrayList<ColumnInfo>();;
+		if(columnInfos==null)columnInfos=new ArrayList<ColumnInfo>();
 		return columnInfos.get(i);
 	}
+	public ColumnInfo getColumnInfo(String name) {
+		if(columnInfos==null)columnInfos=new ArrayList<ColumnInfo>();
+
+		for(int i=0;i<dataTable.columns.length;i++){
+			if(name.equals(dataTable.columns[i])){
+				return columnInfos.get(i);
+			}
+		}
+		return null;
+	}
 	public void setColumnInfo(int i,ColumnInfo columnInfo) {
-		if(columnInfos==null)columnInfos=new ArrayList<ColumnInfo>();;
+		if(columnInfos==null)columnInfos=new ArrayList<ColumnInfo>();
 		columnInfos.set(i, columnInfo);
 	}
 }

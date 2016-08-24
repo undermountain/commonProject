@@ -64,7 +64,7 @@ public abstract class FieldBase extends Elementer implements Serializable {
 
 	public boolean setValueByRequest(HttpServletRequest request) {
 		String value=request.getParameter(getId()).trim();
-		setAttribute("value", value);
+		setValue(value);
 		return value!=null;
 	}
 	public void setValue(Object value){

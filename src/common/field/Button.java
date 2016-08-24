@@ -8,6 +8,12 @@ import common.base.FieldBase;
 
 public class Button extends FieldBase implements Serializable {
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * デフォルトタイプ：サブミット
+	 * @param id
+	 * @param caption
+	 */
 	public Button( String id,String caption) {
 		super("button", id);
 		inner=caption;

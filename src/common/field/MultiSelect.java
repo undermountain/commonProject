@@ -60,9 +60,9 @@ public class MultiSelect extends FieldBase implements Serializable {
 			for(int i=0;i<this.childElementer.size();i++){
 				Elementer element=this.childElementer.get(i).childElementer.get(0).childElementer.get(0);
 				if(obj.contains(element.getAttribute("value"))){
-					element.setAttribute("selected", "selected");
+					element.setAttribute("checked", "checked");
 				}else{
-					element.removeAttribute("selected");
+					element.removeAttribute("checked");
 				}
 			}
 		}else{
@@ -70,10 +70,10 @@ public class MultiSelect extends FieldBase implements Serializable {
 			for(int i=0;i<this.childElementer.size();i++){
 				Elementer element=this.childElementer.get(i).childElementer.get(0).childElementer.get(0);
 				if(element.getAttribute("value").equals(value)){
-					if(element.getAttribute("selected")==null){
-						element.setAttribute("selected", "selected");
+					if(element.getAttribute("checked")==null){
+						element.setAttribute("checked", "checked");
 					}else{
-						element.removeAttribute("selected");
+						element.removeAttribute("checked");
 					}
 				}
 			}
@@ -113,7 +113,7 @@ public class MultiSelect extends FieldBase implements Serializable {
 
 			Elementer element=getChildById(getId()+String.valueOf(i++));
 			if(element==null)break;
-			if(element.getAttribute("selected")!=null)
+			if(element.getAttribute("checked")!=null)
 				list.add(element.getAttribute("value"));
 		}
 

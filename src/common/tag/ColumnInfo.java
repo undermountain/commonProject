@@ -40,27 +40,41 @@ public class ColumnInfo implements Serializable {
 	}
 
 	private void display(StringBuilder sb,Object value){
+
+		//プレフィックス
+		sb.append(prefix);
+
+		//NULL
 		if(value==null){
 			sb.append(nullString);
-			return;
-		}
-		sb.append(prefix);
-		String result="";
-		if(format!=null){
-			result=String.format(format, value);
 		}else{
-			result=value.toString();
-		}
-		result=rawString(result);
-		if(displayMaxLength>0 && result.length()>displayMaxLength){
-			result=result.substring(0, displayMaxLength)+"…";
-		}
-		if(stringFormat!=null){
-			sb.append(String.format(stringFormat, result));
-		}else{
-			sb.append(result);
+
+			String result="";
+
+			//フォーマット
+			if(format!=null){
+				result=String.format(format, value);
+			}else{
+				result=value.toString();
+			}
+
+			//エンコード
+			result=rawString(result);
+
+			//表示文字数
+			if(displayMaxLength>0 && result.length()>displayMaxLength){
+				result="<div style=\"cursor:default;\" title=\""+value.toString().replaceAll("\"", "\\\"")+"\">"+result.substring(0, displayMaxLength)+"…"+"</div>";
+			}
+
+			//文字列フォーマット
+			if(stringFormat!=null){
+				sb.append(String.format(stringFormat, result));
+			}else{
+				sb.append(result);
+			}
 		}
 
+		//語尾
 		sb.append(suffix);
 	}
 
